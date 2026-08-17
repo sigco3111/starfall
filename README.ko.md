@@ -8,9 +8,9 @@
 
 | 페이지 | URL |
 |---|---|
-| 🎮 플레이 | https://sigco3111.github.io/starfall-korea/ |
+| 🎮 플레이 | https://sigco3111.github.io/starfall/ |
 | 📦 원본 (영문) | https://e01.ai/starfall/ |
-| 🔧 소스 | https://github.com/sigco3111/starfall-korea |
+| 🔧 소스 | https://github.com/sigco3111/starfall |
 
 Claude Opus 5가 **단 한 번의 프롬프트**로부터 멀티 에이전트 워크플로를 운전해 만든 우주 RTS입니다. 디자인 문서도, 자산 목록도, 아키텍처 명세도 사전에 정해진 것이 없었습니다 — [`prompt.md`](prompt.md)에 그 프롬프트가 그대로 실려 있습니다.
 

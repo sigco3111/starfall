@@ -8,12 +8,12 @@
 
 | 페이지 | URL |
 |---|---|
-| 🎮 라이브 데모 | https://sigco3111.github.io/starfall-korea/ |
+| 🎮 라이브 데모 | https://sigco3111.github.io/starfall/ |
 | 📦 원본 (영문) | https://e01.ai/starfall/ |
 | 🔧 원본 소스 | https://github.com/e01-ai/starfall |
-| 🍴 이 fork | https://github.com/sigco3111/starfall-korea |
+| 🍴 이 fork | https://github.com/sigco3111/starfall |
 
-![A fleet engagement in Starfall](https://sigco3111.github.io/starfall-korea/og.jpg)
+![A fleet engagement in Starfall](https://sigco3111.github.io/starfall/og.jpg)
 
 ## 무엇이 다른가
 
@@ -33,7 +33,7 @@
 | 인게임 크레딧 (Homeworld 헌정·Claude Opus 5·OpenGameArt·Kenney) | ✅ 한국어 (브랜드·저작자명 보존) |
 | 노스크립트 fallback (검색엔진·JS OFF 사용자용) | ✅ 한국어 |
 | `<title>`, `<meta description>`, OpenGraph, Twitter Card | ✅ 한국어 + 정직한 GitHub Pages URL |
-| GitHub Pages 배포 (`/starfall-korea/`) | ✅ 정적 SPA |
+| GitHub Pages 배포 (`/starfall/`) | ✅ 정적 SPA |
 
 **보존된 것**: 13종 함선 코드네임(Probe Scout/Talon Interceptor/...), 브랜드(Homeworld, Claude Opus 5, Mike Luan, Vite, TypeScript, Three.js, e01.ai), 라이선스(MIT), 엔진 동작, 시뮬레이션 로직.
 
@@ -42,10 +42,10 @@
 ## 빠른 시작
 
 ```bash
-git clone https://github.com/sigco3111/starfall-korea.git
-cd starfall-korea
+git clone https://github.com/sigco3111/starfall.git
+cd starfall
 npm install
-npm run dev    # http://localhost:5173/starfall-korea/
+npm run dev    # http://localhost:5173/starfall/
 ```
 
 빌드:
@@ -109,7 +109,7 @@ GitHub Pages 배포는 `gh-pages` 분기에 빌드 산출물(`dist/` + `public/`
 - **원본 라이선스**: [MIT](LICENSE) (Copyright (c) 2026 e01.ai)
 - **원본 페이지**: https://e01.ai/starfall/
 
-**이 fork의 추가분**: 한국어 번역 + GitHub Pages 배포 (sigco3111/starfall-korea).
+**이 fork의 추가분**: 한국어 번역 + GitHub Pages 배포 (sigco3111/starfall).
 
 **이 fork의 라이선스**: [MIT](LICENSE) (Copyright (c) 2026 sigco3111). 한국어 텍스트도 같은 MIT 라이선스 하에 배포됩니다 — 원본과 동일한 조건으로 자유롭게 사용·수정·배포 가능.
 
@@ -119,7 +119,7 @@ GitHub Pages 배포는 `gh-pages` 분기에 빌드 산출물(`dist/` + `public/`
 
 1. **번역 데이터**: `src/i18n.ts`에 한국어 dict 추가 + 모든 사용자 가시 리터럴을 `t()` 호출로 감쌈
 2. **부팅 화면**: `index.html`의 `lang="en"` → `"ko"`, 메타 설명·타이틀·OpenGraph 한국어화, 부팅 텍스트 `data-i18n` 속성 부여
-3. **배포 설정**: `vite.config.ts`의 `base: './'` → `'/starfall-korea/'` (GitHub Pages 경로)
+3. **배포 설정**: `vite.config.ts`의 `base: './'` → `'/starfall/'` (GitHub Pages 경로)
 4. **정직함**: 원본 e01.ai 도메인을 가리키던 canonical/og:url/og:image/sitemap/robots 모두 sigco3111.github.io로 정직 갱신 + 부팅 푸터에 fork 정보 명시
 
 빌드는 `tsc --noEmit && vite build`로 1초 이내 통과하며 0 에러입니다.
