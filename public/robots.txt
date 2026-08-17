@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://e01.ai/sitemap.xml
