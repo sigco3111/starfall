@@ -25,6 +25,7 @@ import { SFX_PACKS } from '../core/samples';
 import { CONTROL_HELP } from '../input/controls';
 import { AUTHOR_HANDLE, AUTHOR_NAME, authorLinks, iconLink } from './links';
 import { bus } from '../core/bus';
+import { t } from '../i18n';
 
 type Tab = 'controls' | 'credits' | 'audio';
 
@@ -57,14 +58,14 @@ export class Menu {
     this.root = el('div', 'sf-menu', parent);
     this.root.setAttribute('role', 'dialog');
     this.root.setAttribute('aria-modal', 'true');
-    this.root.setAttribute('aria-label', 'Menu');
+    this.root.setAttribute('aria-label', t('menuAria'));
 
     const sheet = el('div', 'sf-menu-sheet', this.root);
     const head = el('div', 'sf-menu-head', sheet);
-    el('div', 'sf-menu-title', head).textContent = 'STARFALL';
+    el('div', 'sf-menu-title', head).textContent = t('menuTitle');
     const nav = el('div', 'sf-menu-tabs', head);
     for (const [id, label] of [
-      ['controls', 'Controls'], ['credits', 'Credits'], ['audio', 'Audio'],
+      ['controls', t('menuTabControls')], ['credits', t('menuTabCredits')], ['audio', t('menuTabAudio')],
     ] as [Tab, string][]) {
       const b = el('button', 'sf-menu-tab', nav);
       b.type = 'button';
@@ -76,15 +77,14 @@ export class Menu {
     }
     const close = el('button', 'sf-menu-close', head);
     close.type = 'button';
-    close.title = 'Close (Esc)';
+    close.title = t('menuCloseTitle');
     close.textContent = '✕';
     const onClose = (): void => this.hide();
     close.addEventListener('click', onClose);
     this.disposers.push(() => close.removeEventListener('click', onClose));
 
     this.body = el('div', 'sf-menu-body sf-scroll', sheet);
-    el('div', 'sf-menu-foot', sheet).textContent =
-      'Mike Luan · @mikeluan123 · e01.ai experiment  ·  F1 or Esc to close';
+    el('div', 'sf-menu-foot', sheet).textContent = t('menuFooter');
 
     // Click the backdrop to dismiss, but not a click that started inside the
     // sheet and merely finished outside it.
@@ -181,7 +181,7 @@ export class Menu {
   }
 
   private renderCredits(): void {
-    el('h3', 'sf-menu-h', this.body).textContent = 'Made by';
+    el('h3', 'sf-menu-h', this.body).textContent = t('menuHeaderMadeBy');
     const by = el('ul', 'sf-menu-credits', this.body);
     const me = el('li', '', by);
     el('b', '', me).textContent = AUTHOR_NAME;
@@ -190,26 +190,14 @@ export class Menu {
     for (const l of authorLinks()) iconLink(icons, l.url, l.svg, l.title, 'sf-menu-icon');
 
     const tribute = el('p', 'sf-menu-tribute', this.body);
-    tribute.textContent =
-      'In tribute to HOMEWORLD (Relic Entertainment, 1999) — the game that '
-      + 'decided a fleet should be a shape in three dimensions, that a wake '
-      + 'should tell you which way a contact is breaking, and that silence and '
-      + 'a horizon line are worth more than any amount of noise. Starfall is an '
-      + 'independent homage; it uses none of its art, audio, code or trademarks.';
+    tribute.textContent = t('menuMadeByBody');
 
-    const lead = el('p', 'sf-menu-lead', this.body);
-    lead.textContent =
-      'Every hull, texture, planet and interface element in this game is '
-      + 'generated at runtime — there is no image file in the build. The audio '
-      + 'is the exception, and all of it is CC0 (public domain). Attribution is '
-      + 'not required for CC0. It is given anyway.';
-
-    el('h3', 'sf-menu-h', this.body).textContent = 'Music — calm';
+    el('h3', 'sf-menu-h', this.body).textContent = t('menuHeaderMusicCalm');
     this.trackList(CALM_TRACKS);
-    el('h3', 'sf-menu-h', this.body).textContent = 'Music — combat';
+    el('h3', 'sf-menu-h', this.body).textContent = t('menuHeaderMusicCombat');
     this.trackList(COMBAT_TRACKS);
 
-    el('h3', 'sf-menu-h', this.body).textContent = 'Sound effects';
+    el('h3', 'sf-menu-h', this.body).textContent = t('menuHeaderSfx');
     const list = el('ul', 'sf-menu-credits', this.body);
     for (const p of SFX_PACKS) {
       const li = el('li', '', list);
@@ -219,17 +207,17 @@ export class Menu {
       this.link(li, p.source);
     }
 
-    el('h3', 'sf-menu-h', this.body).textContent = 'Written by';
+    el('h3', 'sf-menu-h', this.body).textContent = t('menuHeaderWrittenBy');
     const how = el('ul', 'sf-menu-credits', this.body);
     const model = el('li', '', how);
-    el('b', '', model).textContent = 'Claude Opus 5';
+    el('b', '', model).textContent = t('menuModelName');
     el('span', 'sf-menu-by', model).textContent = ' — multi-agent workflow, from one prompt';
     const prompt = el('li', '', how);
-    el('b', '', prompt).textContent = 'The prompt';
+    el('b', '', prompt).textContent = t('menuPromptLink');
     el('span', 'sf-menu-by', prompt).textContent = ' — adapted from Matt Shumer\u2019s one-shot AAA prompt';
     this.link(prompt, 'https://x.com/mattshumer_', 'x.com/mattshumer_');
 
-    el('h3', 'sf-menu-h', this.body).textContent = 'Built with';
+    el('h3', 'sf-menu-h', this.body).textContent = t('menuHeaderBuiltWith');
     const tech = el('ul', 'sf-menu-credits', this.body);
     for (const [name, url] of [
       ['three.js', 'https://threejs.org'],
@@ -273,7 +261,7 @@ export class Menu {
   private renderAudio(): void {
     const v = this.opts.volumes();
     const rows: [string, keyof typeof v][] = [
-      ['Master', 'master'], ['Effects', 'sfx'], ['Music', 'music'],
+      [t('menuAudioMaster'), 'master'], [t('menuAudioEffects'), 'sfx'], [t('menuAudioMusic'), 'music'],
     ];
     const cur = { ...v };
     for (const [label, key] of rows) {
@@ -295,9 +283,6 @@ export class Menu {
       input.addEventListener('input', on);
       this.disposers.push(() => input.removeEventListener('input', on));
     }
-    el('p', 'sf-menu-lead', this.body).textContent =
-      'The score streams from disk; effects are recorded transients layered '
-      + 'under a synthesised body that supplies the distance model and clusters '
-      + 'a fleet broadside into one report.';
+    el('p', 'sf-menu-lead', this.body).textContent = t('menuAudioBody');
   }
 }

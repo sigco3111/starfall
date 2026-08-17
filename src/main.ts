@@ -14,6 +14,16 @@ import { Rng, hashSeed } from './core/rng';
 import { Team, ShipClass, Formation, type QualitySettings } from './core/types';
 import type { RenderContext } from './core/contracts';
 import { SHIP_SPECS } from './core/registry';
+import { setLanguage as setI18nLang, t as tI18n, applyStatic } from './i18n';
+
+// ---------------------------------------------------------------------------
+// Localization — Korean by default for this fork.
+// `applyStatic` rewrites every [data-i18n]/[data-i18n-title] node in the DOM
+// that was emitted by `index.html` (boot screen, noscript fallback). The
+// in-game HUD/panels call `t()` themselves when they mount.
+// ---------------------------------------------------------------------------
+setI18nLang('ko');
+applyStatic(document);
 
 import { World } from './sim/world';
 import { generateMap } from './sim/mapgen';
@@ -280,7 +290,7 @@ class Game {
       onBuild: (cls) => this.queueBuild(cls),
       onResearch: (id) => {
         if (!startResearch(this.world, Team.Player, id)) {
-          bus.emit('notice', { text: 'Cannot start research', kind: 'warn' });
+          bus.emit('notice', { text: tI18n('cannotStartResearch'), kind: 'warn' });
         }
       },
       onCancel: (index) => {
@@ -451,11 +461,11 @@ class Game {
   private queueBuild(cls: ShipClass): void {
     const producer = this.selectedProducer();
     if (producer < 0) {
-      bus.emit('notice', { text: 'No production facility', kind: 'warn' });
+      bus.emit('notice', { text: tI18n('noProductionFacility'), kind: 'warn' });
       return;
     }
     if (!enqueueBuild(this.world, producer, cls)) {
-      bus.emit('notice', { text: 'Cannot build — resources, supply or tech', kind: 'warn' });
+      bus.emit('notice', { text: tI18n('cannotBuildShort'), kind: 'warn' });
     }
   }
 

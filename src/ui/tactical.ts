@@ -32,6 +32,7 @@ import { CONFIG } from '../core/config';
 import type { UiLayer } from '../core/contracts';
 import { PALETTES, UI } from '../core/palette';
 import { SHIP_SPECS } from '../core/registry';
+import { t } from '../i18n';
 import { HullSize, ShipClass, Team } from '../core/types';
 import type { World } from '../sim/world';
 import './panels.css';
@@ -138,7 +139,7 @@ export class TacticalOverlay implements UiLayer {
 
     this.banner = document.createElement('div');
     this.banner.className = 'sf-tac-banner';
-    this.banner.textContent = 'SENSORS MANAGER';
+    this.banner.textContent = t('sensorsManager');
 
     this.frame = document.createElement('div');
     this.frame.className = 'sf-minimap';
