@@ -27,6 +27,8 @@
  * no-op — the synth layer is already carrying the event on its own.
  */
 
+import { t } from '../i18n';
+
 /** Ceiling on simultaneous sample voices. Past this, new plays are dropped. */
 const VOICE_CAP = 24;
 
@@ -100,15 +102,15 @@ export const BANK: Record<string, readonly string[]> = {
 export const SFX_PACKS: readonly { title: string; author: string; source: string; use: string }[] = [
   {
     title: 'Sci-Fi Sounds', author: 'Kenney', source: 'https://kenney.nl/assets/sci-fi-sounds',
-    use: 'lasers, explosions, force fields, metal impacts',
+    use: t('sfxPackUseSciFi'),
   },
   {
     title: 'Impact Sounds', author: 'Kenney', source: 'https://kenney.nl/assets/impact-sounds',
-    use: 'heavy plate and metal strikes',
+    use: t('sfxPackUseImpact'),
   },
   {
     title: 'Interface Sounds', author: 'Kenney', source: 'https://kenney.nl/assets/interface-sounds',
-    use: 'clicks, confirmations, alerts',
+    use: t('sfxPackUseInterface'),
   },
 ];
 

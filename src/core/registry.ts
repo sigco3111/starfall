@@ -20,6 +20,7 @@ import {
   type ShipSpec,
   type WeaponSpec,
 } from './types';
+import { t } from '../i18n';
 
 const D2R = Math.PI / 180;
 
@@ -340,55 +341,55 @@ export function spec(cls: ShipClass): ShipSpec {
 export const RESEARCH: ResearchSpec[] = [
   {
     id: 'strikecraft', name: 'Strike Craft Doctrine',
-    desc: 'Unlocks bomber wings and assault corvettes.',
+    desc: t('researchDescStrikecraft'),
     cost: 450, time: 45, requires: [],
     unlocks: [ShipClass.Bomber, ShipClass.AssaultCorvette],
   },
   {
     id: 'refining', name: 'Mobile Refining',
-    desc: 'Unlocks the Crucible refinery. Collectors dock closer to the field.',
+    desc: t('researchDescRefining'),
     cost: 380, time: 40, requires: [],
     unlocks: [ShipClass.ResourceRefinery],
   },
   {
     id: 'capships', name: 'Capital Ship Frames',
-    desc: 'Unlocks ion and assault frigates.',
+    desc: t('researchDescCapships'),
     cost: 900, time: 80, requires: ['strikecraft'],
     unlocks: [ShipClass.IonFrigate, ShipClass.AssaultFrigate],
   },
   {
     id: 'guidance', name: 'Guided Ordnance',
-    desc: 'Unlocks missile corvettes. +12% weapon damage fleet-wide.',
+    desc: t('researchDescGuidance'),
     cost: 700, time: 65, requires: ['strikecraft'],
     unlocks: [ShipClass.MissileCorvette], mods: { damage: 1.12 },
   },
   {
     id: 'plating', name: 'Composite Plating',
-    desc: '+20% armour on every hull.',
+    desc: t('researchDescPlating'),
     cost: 850, time: 70, requires: ['capships'],
     unlocks: [], mods: { armour: 1.2 },
   },
   {
     id: 'destroyers', name: 'Destroyer Programme',
-    desc: 'Unlocks the Aegis destroyer and Anvil carrier.',
+    desc: t('researchDescDestroyers'),
     cost: 1600, time: 120, requires: ['capships'],
     unlocks: [ShipClass.Destroyer, ShipClass.Carrier],
   },
   {
     id: 'shields', name: 'Deflector Lattice',
-    desc: '+30% shield capacity fleet-wide.',
+    desc: t('researchDescShields'),
     cost: 1400, time: 105, requires: ['capships'],
     unlocks: [], mods: { shield: 1.3 },
   },
   {
     id: 'cruisers', name: 'Sovereign Programme',
-    desc: 'Unlocks the Sovereign heavy cruiser.',
+    desc: t('researchDescCruisers'),
     cost: 3000, time: 180, requires: ['destroyers', 'shields'],
     unlocks: [ShipClass.HeavyCruiser],
   },
   {
     id: 'drives', name: 'Ion Drive Tuning',
-    desc: '+15% speed on every hull.',
+    desc: t('researchDescDrives'),
     cost: 750, time: 60, requires: ['refining'],
     unlocks: [], mods: { speed: 1.15 },
   },

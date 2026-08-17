@@ -58,6 +58,7 @@ import { bus } from '../core/bus';
 import { CONFIG } from '../core/config';
 import { SHIP_SPECS } from '../core/registry';
 import { Formation, ShipClass, Stance, Team } from '../core/types';
+import { t as i18nT } from '../i18n';
 import type { World } from '../sim/world';
 import type { NdcPoint, PickRay } from '../render/cameraRig';
 import { TacticalCamera } from '../render/cameraRig';
@@ -124,23 +125,23 @@ export const INPUT = {
  */
 export const CONTROL_HELP: readonly { group: string; rows: readonly (readonly [string, string])[] }[] = [
   {
-    group: 'Selecting',
+    group: i18nT('ctrlGroupSelecting'),
     rows: [
-      ['Left click', 'select a ship'],
-      ['Left drag', 'band select'],
+      ['Left click', i18nT('ctrlLeftClick')],
+      ['Left drag', i18nT('ctrlLeftDrag')],
       ['Shift / Ctrl + click', 'add to / toggle in the selection'],
-      ['Double click', 'select every visible ship of that class'],
+      ['Double click', i18nT('ctrlDoubleClick')],
       ['Tab / Shift+Tab', 'cycle subgroup by class'],
       ['Ctrl+A', 'select all'],
       ['Ctrl+1..9 / 1..9', 'assign / recall control group (recall twice to centre)'],
       ['Fleet bar (left edge)', 'select a whole class; double click to frame it'],
-      ['Esc', 'cancel an armed order, else clear the selection'],
+      ['Esc', i18nT('ctrlEsc')],
     ],
   },
   {
-    group: 'Ordering',
+    group: i18nT('ctrlGroupOrdering'),
     rows: [
-      ['Right click', 'context order — attack, dock, guard, harvest or move'],
+      ['Right click', i18nT('ctrlRightClick')],
       ['Right drag up / down', 'move disc: set the destination ALTITUDE'],
       ['Shift + any order', 'queue it instead of replacing'],
       ['A / M / G', 'arm attack-move / move / guard, then click'],
@@ -148,17 +149,17 @@ export const CONTROL_HELP: readonly { group: string; rows: readonly (readonly [s
       ['D', 'dock'],
       ['H', 'harvest'],
       ['Alt+0..7', 'formation — none, delta, broad, wall, sphere, claw, line, auto'],
-      ['Z X C V', 'stance — aggressive, neutral, passive, evasive'],
+      ['Z X C V', i18nT('ctrlZXCV')],
     ],
   },
   {
-    group: 'Camera',
+    group: i18nT('ctrlGroupCamera'),
     rows: [
       ['Hold SPACE + drag', 'CAMERA ONLY — left pans, right orbits, no orders fire'],
-      ['Middle drag', 'pan'],
+      ['Middle drag', i18nT('ctrlMiddleDrag')],
       ['Alt + left drag', 'orbit'],
-      ['Right drag sideways', 'orbit (cancels the pending order)'],
-      ['Wheel', 'zoom'],
+      ['Right drag sideways', i18nT('ctrlRightDragSideways')],
+      ['Wheel', i18nT('ctrlWheel')],
       ['Arrows / W / screen edge', 'pan'],
       ['Q / E', 'yaw'],
       ['Hold A / S / D', 'pan (a TAP is the command instead)'],
@@ -1179,7 +1180,7 @@ export class Controls {
     if (this.gizmoActive) {
       const g = this._gizmo;
       commandMove(this.world, sel, g.x, g.y, g.z, queue, this.formationFor(sel));
-      bus.emit('notice', { text: 'MOVE ORDER CONFIRMED', kind: 'info' });
+      bus.emit('notice', { text: i18nT('noticeMoveConfirmed'), kind: 'info' });
       return;
     }
 
@@ -1194,7 +1195,7 @@ export class Controls {
       if (t && t.team !== Team.Player) {
         commandAttack(this.world, sel, shipId, queue);
         bus.emit('ack', { kind: 'attack', count: sel.length });
-        bus.emit('notice', { text: 'ATTACKING', kind: 'warn' });
+        bus.emit('notice', { text: i18nT('noticeAttacking'), kind: 'warn' });
         return;
       }
       if (t && sel.indexOf(t.id) < 0) {
@@ -1211,7 +1212,7 @@ export class Controls {
         if (this.selectionHasCollector()) {
           commandHarvest(this.world, sel, rockId);
           bus.emit('ack', { kind: 'order', count: sel.length });
-          bus.emit('notice', { text: 'HARVESTING', kind: 'info' });
+          bus.emit('notice', { text: i18nT('noticeHarvesting'), kind: 'info' });
         } else {
           commandMove(
             this.world, sel, rock.pos.x, rock.pos.y, rock.pos.z, queue, this.formationFor(sel),
@@ -1254,7 +1255,7 @@ export class Controls {
     if (mode === 'attackMove') {
       commandAttackMove(this.world, sel, _hit.x, _hit.y, _hit.z, queue, f);
       bus.emit('ack', { kind: 'attack', count: sel.length });
-      bus.emit('notice', { text: 'ATTACK MOVE', kind: 'warn' });
+      bus.emit('notice', { text: i18nT('noticeAttackMove'), kind: 'warn' });
     } else {
       commandMove(this.world, sel, _hit.x, _hit.y, _hit.z, queue, f);
     }
@@ -1339,7 +1340,7 @@ export class Controls {
       if (t >= 0 && t <= INPUT.tapSeconds && sel.length > 0) {
         commandStop(this.world, sel);
         bus.emit('ack', { kind: 'order', count: sel.length });
-        bus.emit('notice', { text: 'HOLDING POSITION', kind: 'info' });
+        bus.emit('notice', { text: i18nT('noticeHoldingPosition'), kind: 'info' });
       }
     } else if (e.code === 'KeyD') {
       const t = this.tapD;

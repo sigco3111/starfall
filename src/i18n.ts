@@ -274,6 +274,43 @@ const EN: Record<string, string> = {
   menuAudioBody: 'The score streams from disk; effects are recorded transients layered for impact. Tracks come from OpenGameArt contributors (CC0).',
   menuMadeByBody: 'In tribute to HOMEWORLD (Relic Entertainment, 1999) — the game that decided a fleet should be a shape in three dimensions, that a wake should tell you which way a contact is breaking, and that silence and a horizon line are worth more than any amount of noise. Starfall is an independent homage and uses none of its art, audio, code or trademarks.',
 
+  // Controls help (menu → 조작 탭)
+  ctrlGroupSelecting: 'Selecting',
+  ctrlGroupOrdering: 'Ordering',
+  ctrlGroupCamera: 'Camera',
+  ctrlLeftClick: 'select a ship',
+  ctrlLeftDrag: 'band select',
+  ctrlDoubleClick: 'select every visible ship of that class',
+  ctrlEsc: 'cancel an armed order, else clear the selection',
+  ctrlRightClick: 'context order — attack, dock, guard, harvest or move',
+  ctrlZXCV: 'stance — aggressive, neutral, passive, evasive',
+  ctrlMiddleDrag: 'pan',
+  ctrlRightDragSideways: 'orbit (cancels the pending order)',
+  ctrlWheel: 'zoom',
+
+  // Notice messages (in-game alerts)
+  noticeMoveConfirmed: 'MOVE ORDER CONFIRMED',
+  noticeAttacking: 'ATTACKING',
+  noticeHarvesting: 'HARVESTING',
+  noticeAttackMove: 'ATTACK MOVE',
+  noticeHoldingPosition: 'HOLDING POSITION',
+
+  // Research descriptions (registry RESEARCH.desc)
+  researchDescStrikecraft: 'Unlocks bomber wings and assault corvettes.',
+  researchDescRefining: 'Unlocks the Crucible refinery. Collectors dock closer to the field.',
+  researchDescCapships: 'Unlocks ion and assault frigates.',
+  researchDescGuidance: 'Unlocks missile corvettes. +12% weapon damage fleet-wide.',
+  researchDescPlating: '+20% armour on every hull.',
+  researchDescDestroyers: 'Unlocks the Aegis destroyer and Anvil carrier.',
+  researchDescShields: '+30% shield capacity fleet-wide.',
+  researchDescCruisers: 'Unlocks the Sovereign heavy cruiser.',
+  researchDescDrives: '+15% speed on every hull.',
+
+  // SFX pack uses (core/samples.ts)
+  sfxPackUseSciFi: 'lasers, explosions, force fields, metal impacts',
+  sfxPackUseImpact: 'heavy plate and metal strikes',
+  sfxPackUseInterface: 'clicks, confirmations, alerts',
+
   // No-build category fallback
   categoryFallbackSupport: 'SUPPORT',
   categoryFallbackCollection: 'RESOURCE COLLECTION',
@@ -449,6 +486,43 @@ const KO: Record<string, string> = {
   menuAudioMusic: '음악',
   menuAudioBody: '스코어는 디스크에서 스트리밍되며, 효과음은 임팩트를 위해 레이어드된 녹음 트랜지언트입니다. 곡은 OpenGameArt 기여자의 CC0 음악입니다.',
   menuMadeByBody: 'HOMEWORLD(Relic Entertainment, 1999)에 헌정 — 함대는 3차원의 형태여야 한다는 점, 흔적은 적이 어떤 방향으로 이탈하는지 알려주어야 한다는 점, 그리고 침묵과 수평선이 그 어떤 소란보다 가치가 있다는 점을 일깨워 준 작품. Starfall은 독립적 오마주이며 그 미술·음악·코드·상표를 일절 사용하지 않습니다.',
+
+  // Controls help
+  ctrlGroupSelecting: '선택',
+  ctrlGroupOrdering: '명령',
+  ctrlGroupCamera: '카메라',
+  ctrlLeftClick: '함선 선택',
+  ctrlLeftDrag: '밴드 선택',
+  ctrlDoubleClick: '보이는 같은 클래스의 함선 전부 선택',
+  ctrlEsc: '보류 주문 취소, 그 외에는 선택 해제',
+  ctrlRightClick: '상황 주문 — 공격·귀환·보호·채집·이동',
+  ctrlZXCV: '스탠스 — 공격적·중립·방어적·회피',
+  ctrlMiddleDrag: '팬',
+  ctrlRightDragSideways: '궤도 (보류 주문 취소)',
+  ctrlWheel: '줌',
+
+  // Notice messages
+  noticeMoveConfirmed: '이동 주문 확정',
+  noticeAttacking: '공격 중',
+  noticeHarvesting: '채집 중',
+  noticeAttackMove: '공격 이동',
+  noticeHoldingPosition: '현위치 대기',
+
+  // Research descriptions
+  researchDescStrikecraft: '폭격기 편대와 돌격 호위함을 해금합니다.',
+  researchDescRefining: 'Crucible 정련소를 해금합니다. 수집기가 자원지에 더 가까이 도킹합니다.',
+  researchDescCapships: '이온/돌격 프리깃을 해금합니다.',
+  researchDescGuidance: '미사일 호위함을 해금합니다. 함대 전체 무기 피해 +12%.',
+  researchDescPlating: '모든 함선 장갑 +20%.',
+  researchDescDestroyers: 'Aegis 구축함과 Anvil 항공모함을 해금합니다.',
+  researchDescShields: '함대 전체 방어막 +30%.',
+  researchDescCruisers: 'Sovereign 중순양함을 해금합니다.',
+  researchDescDrives: '모든 함선 속도 +15%.',
+
+  // SFX pack uses
+  sfxPackUseSciFi: '레이저, 폭발, 포스 필드, 금속 충돌',
+  sfxPackUseImpact: '중장갑/금속 타격',
+  sfxPackUseInterface: '클릭, 확인, 알림',
 };
 
 // Late-bind the dicts — they are defined as `const` below this block,
