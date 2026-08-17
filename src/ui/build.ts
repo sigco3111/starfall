@@ -72,6 +72,7 @@ import { bus } from '../core/bus';
 import type { UiLayer } from '../core/contracts';
 import { PALETTES, UI } from '../core/palette';
 import { RESEARCH, RESEARCH_BY_ID, SHIP_SPECS, STARTING_UNLOCKS } from '../core/registry';
+import { t, shipDisplayName } from '../i18n';
 import {
   ALL_SHIP_CLASSES,
   HullSize,
@@ -747,7 +748,7 @@ export class BuildPanel implements UiLayer {
     // so toggling costs one class change and never touches layout otherwise.
     const tab = el('button', 'sf-build-tab', this.panel) as HTMLButtonElement;
     tab.type = 'button';
-    tab.title = 'Production (select a carrier or mothership, or click to pin)';
+    tab.title = t('productionPanelTitle');
     tab.innerHTML = '<span class="sf-build-tab-glyph">&#9635;</span>'
       + '<span class="sf-build-tab-label">PROD</span>';
     const onTab = (): void => {
@@ -761,7 +762,7 @@ export class BuildPanel implements UiLayer {
     // Close control, only meaningful while pinned open with nothing selected.
     const close = el('button', 'sf-build-close', this.panel) as HTMLButtonElement;
     close.type = 'button';
-    close.title = 'Collapse production panel';
+    close.title = t('collapsePanelTitle');
     close.textContent = '–';
     const onClose = (): void => {
       this.pinnedOpen = false;
@@ -773,7 +774,7 @@ export class BuildPanel implements UiLayer {
 
     const head = el('div', 'sf-build-head', this.body);
     const title = el('div', 'sf-build-title', head);
-    title.textContent = 'PRODUCTION';
+    title.textContent = t('production');
     const econ = el('div', 'sf-build-econ', head);
     this.econRes = el('span', 'sf-econ-res', econ);
     el('span', 'sf-econ-sep', econ).textContent = '·';
@@ -838,7 +839,7 @@ export class BuildPanel implements UiLayer {
     // ---- queue -----------------------------------------------------------
     const qWrap = el('div', 'sf-section', this.body);
     const qHead = el('div', 'sf-section-head', qWrap);
-    el('div', 'sf-section-label', qHead).textContent = 'BUILD QUEUE';
+    el('div', 'sf-section-label', qHead).textContent = t('buildQueue');
     // [C5] The cancel affordance, stated rather than discovered.
     this.queueHint = el('div', 'sf-section-hint', qHead);
     this.queueHint.textContent = '';
@@ -857,7 +858,7 @@ export class BuildPanel implements UiLayer {
       const slotEl = el('div', 'sf-slot', this.queueRow);
       slotEl.dataset.idx = String(i);
       slotEl.style.display = 'none';
-      slotEl.title = 'Cancel this order';
+      slotEl.title = t('cancelOrderTitle');
 
       const s = svg('svg', 'sf-slot-arc', slotEl);
       s.setAttribute('viewBox', '0 0 36 36');
@@ -896,17 +897,17 @@ export class BuildPanel implements UiLayer {
     // "17.9k …" — i.e. the control never actually told you where the rally was.
     this.rally = el('div', 'sf-rally', this.body);
     const rallyTop = el('div', 'sf-rally-top', this.rally);
-    el('span', 'sf-rally-label', rallyTop).textContent = 'RALLY';
+    el('span', 'sf-rally-label', rallyTop).textContent = t('rally');
     const rallySpacer = el('span', 'sf-rally-gap', rallyTop);
     rallySpacer.textContent = '';
     const setBtn = el('button', 'sf-btn', rallyTop);
     setBtn.type = 'button';
-    setBtn.textContent = 'SET';
-    setBtn.title = 'Arm rally placement, then click a point in space';
+    setBtn.textContent = t('setRally');
+    setBtn.title = t('setRallyTitle');
     const clrBtn = el('button', 'sf-btn', rallyTop);
     clrBtn.type = 'button';
-    clrBtn.textContent = 'CLEAR';
-    clrBtn.title = 'Clear the rally point — new hulls hold at the hangar';
+    clrBtn.textContent = t('clearRally');
+    clrBtn.title = t('clearRallyTitle');
     this.rallyClr = clrBtn;
     this.rallyVal = el('div', 'sf-rally-val', this.rally);
 
@@ -923,7 +924,7 @@ export class BuildPanel implements UiLayer {
     const onClr = (): void => {
       if (!this.producer) return;
       this.producer.rally = null;
-      bus.emit('notice', { text: 'RALLY POINT CLEARED', kind: 'info' });
+      bus.emit('notice', { text: t('rallyCleared'), kind: 'info' });
     };
     setBtn.addEventListener('click', onSet);
     clrBtn.addEventListener('click', onClr);
@@ -943,7 +944,7 @@ export class BuildPanel implements UiLayer {
     const resWrap = el('div', 'sf-section sf-research is-closed', this.body);
     const resHead = el('button', 'sf-res-head', resWrap) as HTMLButtonElement;
     resHead.type = 'button';
-    el('span', 'sf-section-label', resHead).textContent = 'RESEARCH';
+    el('span', 'sf-section-label', resHead).textContent = t('research');
     const caret = el('span', 'sf-res-caret', resHead);
     caret.textContent = '▸';
     this.resActive = el('div', 'sf-res-active', resWrap);
@@ -1310,10 +1311,10 @@ export class BuildPanel implements UiLayer {
     this.lastProducerId = id;
     const s = p ? world.ship(p.shipId) : undefined;
     if (!s) {
-      this.producerName.textContent = 'NO PRODUCTION FACILITY';
+      this.producerName.textContent = t('noProducer');
       this.panel.classList.add('is-idle');
     } else {
-      this.producerName.textContent = SHIP_SPECS[s.cls].name.toUpperCase();
+      this.producerName.textContent = shipDisplayName(SHIP_SPECS[s.cls].name);
       this.panel.classList.remove('is-idle');
     }
     // Tile visibility follows the producer's build list.
@@ -1357,11 +1358,11 @@ export class BuildPanel implements UiLayer {
       case Block.Research: {
         const gate = this.gateOf.get(cls);
         const r = gate ? RESEARCH_BY_ID.get(gate) : undefined;
-        return r ? `LOCKED · REQUIRES ${r.name.toUpperCase()}` : 'LOCKED';
+        return r ? `${t('lockedRequires')} ${r.name.toUpperCase()}` : t('locked');
       }
-      case Block.Resources: return 'INSUFFICIENT RESOURCES';
-      case Block.Supply: return 'SUPPLY CAP REACHED';
-      case Block.QueueFull: return 'BUILD QUEUE FULL';
+      case Block.Resources: return t('insufficientResources');
+      case Block.Supply: return t('supplyCapReached');
+      case Block.QueueFull: return t('buildQueueFull');
       default: return '';
     }
   }
@@ -1427,7 +1428,7 @@ export class BuildPanel implements UiLayer {
         slot.lastPct = -1; // force the arc to re-sync to the new job
         slot.icon.src = buildIcon(job.cls, PALETTES[this.team].uiCss);
         slot.label.textContent = SHIP_SPECS[job.cls].tag;
-        slot.root.title = `CANCEL ${SHIP_SPECS[job.cls].name.toUpperCase()}`;
+        slot.root.title = `${t('cancelOrderTitle')} · ${shipDisplayName(SHIP_SPECS[job.cls].name)}`;
       }
     }
     if (len === this.lastQueueLen) return;
@@ -1438,7 +1439,7 @@ export class BuildPanel implements UiLayer {
     this.queueRow.classList.toggle('is-empty', len === 0);
     this.leadRow.classList.toggle('is-idle', len === 0);
     // [C5] Only advertise the cancel affordance when there is something to cancel.
-    this.queueHint.textContent = len > 0 ? 'CLICK TO CANCEL' : '';
+    this.queueHint.textContent = len > 0 ? t('clickToCancel') : '';
   }
 
   /**
@@ -1464,7 +1465,7 @@ export class BuildPanel implements UiLayer {
         this.lastLeadCls = -1;
         this.lastLeadPct = -1;
         this.lastLeadEta = -1;
-        this.leadName.textContent = 'LINE IDLE';
+        this.leadName.textContent = t('lineIdle');
         this.leadEta.textContent = '';
         this.leadFill.style.width = '0%';
       }
@@ -1475,7 +1476,7 @@ export class BuildPanel implements UiLayer {
     const eta = Math.ceil(job.remaining);
     if (job.cls !== this.lastLeadCls) {
       this.lastLeadCls = job.cls;
-      this.leadName.textContent = SHIP_SPECS[job.cls].name.toUpperCase();
+      this.leadName.textContent = shipDisplayName(SHIP_SPECS[job.cls].name);
     }
     if (pct !== this.lastLeadPct) {
       this.lastLeadPct = pct;
@@ -1495,8 +1496,8 @@ export class BuildPanel implements UiLayer {
     this.lastRallyKey = key;
     this.rally.classList.toggle('is-set', !!r);
     this.rallyClr.disabled = !r;
-    if (!p) this.rallyVal.textContent = 'NO FACILITY';
-    else if (!r) this.rallyVal.textContent = 'HOLD AT HANGAR';
+    if (!p) this.rallyVal.textContent = t('noFacility');
+    else if (!r) this.rallyVal.textContent = t('holdAtHangar');
     else {
       this.rallyVal.textContent =
         `X ${(r.x / 1000).toFixed(1)}k   Y ${(r.y / 1000).toFixed(1)}k   Z ${(r.z / 1000).toFixed(1)}k`;
@@ -1518,7 +1519,7 @@ export class BuildPanel implements UiLayer {
       this.lastActiveId = aid;
       this.lastActivePct = apct;
       if (!active) {
-        this.resActiveText.textContent = 'NO ACTIVE PROJECT';
+        this.resActiveText.textContent = t('noActiveProject');
         this.resActive.classList.remove('is-active');
         this.resActiveFill.style.width = '0%';
       } else {
@@ -1585,9 +1586,9 @@ export class BuildPanel implements UiLayer {
 
 /** One-line role blurb, derived from the spec so it never goes stale. */
 function describeRole(spec: ShipSpec): string {
-  if (spec.harvest) return 'RESOURCE COLLECTION';
+  if (spec.harvest) return t('buildCategoryCollection');
   if (spec.builds.length > 0) return `PRODUCTION · HANGAR ${spec.hangar}`;
-  if (spec.weapons.length === 0) return 'SUPPORT';
+  if (spec.weapons.length === 0) return t('buildCategorySupport');
   const w = spec.weapons[0];
   const best = pickBestTarget(spec);
   return `${w.kind.toUpperCase()} · ${Math.round(w.range)} m · BEST VS ${best}`;
@@ -1595,12 +1596,20 @@ function describeRole(spec: ShipSpec): string {
 
 /** Which hull band the primary weapon's damage table favours. */
 function pickBestTarget(spec: ShipSpec): string {
-  const names = ['FIGHTERS', 'CORVETTES', 'FRIGATES', 'CAPITALS', 'SUPERCAPS', 'UTILITY'];
+  const names: Record<number, string> = {
+    0: t('buildCategoryFighters'),
+    1: t('buildCategoryCorvettes'),
+    2: t('buildCategoryFrigates'),
+    3: t('buildCategoryCapitals'),
+    4: t('buildCategorySupercaps'),
+    5: t('buildCategoryUtility'),
+  };
   const vs = spec.weapons[0].vs;
-  if (!vs) return 'ALL HULLS';
+  if (!vs) return t('buildCategoryAll');
   let bestIdx = 0;
   let bestVal = -Infinity;
-  for (let i = 0; i < names.length; i++) {
+  const nameKeys = Object.keys(names);
+  for (let i = 0; i < nameKeys.length; i++) {
     const v = vs[i as HullSize] ?? 1;
     if (v > bestVal) { bestVal = v; bestIdx = i; }
   }

@@ -55,6 +55,7 @@ import { authorLinks, iconLink } from './links';
 import { CONFIG } from '../core/config';
 import { PALETTES, UI } from '../core/palette';
 import { SHIP_SPECS } from '../core/registry';
+import { t } from '../i18n';
 import {
   Formation,
   HullSize,
@@ -435,34 +436,34 @@ interface CmdDef {
 
 const ORDER_BUTTONS: CmdDef[] = [
   {
-    cmd: 'move', key: 'M', label: 'Move',
+    cmd: 'move', key: 'M', label: t('cmdMoveLabel'),
     icon: GLY + '<path d="M12 3 V19"/><path d="M8 15 L12 19 L16 15"/><path d="M5 21 H19"/></svg>',
-    tipTitle: 'Move',
-    tipBody: 'Fly the selection to a point. Hold and drag vertically at the cursor to set altitude before releasing.',
+    tipTitle: t('cmdMoveTitle'),
+    tipBody: t('cmdMoveBody'),
   },
   {
-    cmd: 'attack', key: 'A', label: 'Attack',
+    cmd: 'attack', key: 'A', label: t('cmdAttackLabel'),
     icon: GLY + '<circle cx="12" cy="12" r="7"/><path d="M12 1 V6 M12 18 V23 M1 12 H6 M18 12 H23"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/></svg>',
-    tipTitle: 'Attack',
-    tipBody: 'Force-fire a target, or attack-move to a point and engage anything hostile on the way.',
+    tipTitle: t('cmdAttackTitle'),
+    tipBody: t('cmdAttackBody'),
   },
   {
-    cmd: 'stop', key: 'S', label: 'Stop',
+    cmd: 'stop', key: 'S', label: t('cmdStopLabel'),
     icon: GLY + '<rect x="5" y="5" width="14" height="14"/><path d="M9 9 H15 V15 H9 Z"/></svg>',
-    tipTitle: 'Stop',
-    tipBody: 'Cancel every queued order and hold station. Stance still governs whether they return fire.',
+    tipTitle: t('cmdStopTitle'),
+    tipBody: t('cmdStopBody'),
   },
   {
-    cmd: 'harvest', key: 'H', label: 'Harvest',
+    cmd: 'harvest', key: 'H', label: t('cmdHarvestLabel'),
     icon: GLY + '<path d="M12 3 L18 7 L16 14 H8 L6 7 Z"/><path d="M9 14 V19 H15 V14"/><path d="M4 21 H20"/></svg>',
-    tipTitle: 'Harvest',
-    tipBody: 'Send collectors to the nearest worked resource field and cycle cargo automatically.',
+    tipTitle: t('cmdHarvestTitle'),
+    tipBody: t('cmdHarvestBody'),
   },
   {
-    cmd: 'dock', key: 'D', label: 'Dock',
+    cmd: 'dock', key: 'D', label: t('cmdDockLabel'),
     icon: GLY + '<path d="M4 4 V9 M4 4 H9 M20 4 V9 M20 4 H15 M4 20 V15 M4 20 H9 M20 20 V15 M20 20 H15"/><path d="M12 8 V16 M9 13 L12 16 L15 13"/></svg>',
-    tipTitle: 'Dock',
-    tipBody: 'Return to the nearest carrier or mothership to repair, rearm and refuel.',
+    tipTitle: t('cmdDockTitle'),
+    tipBody: t('cmdDockBody'),
   },
 ];
 
@@ -471,56 +472,56 @@ const ORDER_BUTTONS: CmdDef[] = [
  *  tooltip and the current name promoted to the group header. */
 const FORMATIONS: Array<{ f: Formation; tag: string; key: string; name: string; body: string; icon: string }> = [
   {
-    f: Formation.Delta, tag: 'DLT', key: '1', name: 'Delta',
-    body: 'Tight arrowhead. Best transit speed, poor spread against splash.',
+    f: Formation.Delta, tag: 'DLT', key: '1', name: t('formationDelta'),
+    body: t('formationDeltaBody'),
     icon: GLYF + '<circle cx="12" cy="6" r="2"/><circle cx="7" cy="13" r="2"/><circle cx="17" cy="13" r="2"/><circle cx="12" cy="18" r="2"/></svg>',
   },
   {
-    f: Formation.Broad, tag: 'BRD', key: '2', name: 'Broad',
-    body: 'Wide echelon. Every hull keeps a clean firing arc forward.',
+    f: Formation.Broad, tag: 'BRD', key: '2', name: t('formationBroad'),
+    body: t('formationBroadBody'),
     icon: GLYF + '<circle cx="12" cy="8" r="2"/><circle cx="6" cy="12" r="2"/><circle cx="18" cy="12" r="2"/><circle cx="2.6" cy="16" r="1.7"/><circle cx="21.4" cy="16" r="1.7"/></svg>',
   },
   {
-    f: Formation.Wall, tag: 'WAL', key: '3', name: 'Wall',
-    body: 'Flat line abreast. Maximum broadside, minimum depth.',
+    f: Formation.Wall, tag: 'WAL', key: '3', name: t('formationWall'),
+    body: t('formationWallBody'),
     icon: GLYF + '<circle cx="4" cy="12" r="2"/><circle cx="9.3" cy="12" r="2"/><circle cx="14.7" cy="12" r="2"/><circle cx="20" cy="12" r="2"/></svg>',
   },
   {
-    f: Formation.Sphere, tag: 'SPH', key: '4', name: 'Sphere',
-    body: 'Shell around the centre of mass. Escort posture for capitals.',
+    f: Formation.Sphere, tag: 'SPH', key: '4', name: t('formationSphere'),
+    body: t('formationSphereBody'),
     icon: GLYF + '<circle cx="12" cy="12" r="2.2"/><circle cx="12" cy="4.6" r="1.7"/><circle cx="12" cy="19.4" r="1.7"/><circle cx="4.6" cy="12" r="1.7"/><circle cx="19.4" cy="12" r="1.7"/><circle cx="6.8" cy="6.8" r="1.4"/><circle cx="17.2" cy="17.2" r="1.4"/><circle cx="17.2" cy="6.8" r="1.4"/><circle cx="6.8" cy="17.2" r="1.4"/></svg>',
   },
   {
-    f: Formation.Claw, tag: 'CLW', key: '5', name: 'Claw',
-    body: 'Split pincer. Splits fire across two approach vectors.',
+    f: Formation.Claw, tag: 'CLW', key: '5', name: t('formationClaw'),
+    body: t('formationClawBody'),
     icon: GLYF + '<circle cx="4" cy="6" r="1.8"/><circle cx="8" cy="11" r="1.8"/><circle cx="11" cy="17" r="1.8"/><circle cx="20" cy="6" r="1.8"/><circle cx="16" cy="11" r="1.8"/><circle cx="13.6" cy="17" r="1.4"/></svg>',
   },
   {
-    f: Formation.Line, tag: 'LIN', key: '6', name: 'Line',
-    body: 'Column astern. Narrow profile through contested space.',
+    f: Formation.Line, tag: 'LIN', key: '6', name: t('formationLine'),
+    body: t('formationLineBody'),
     icon: GLYF + '<circle cx="12" cy="4" r="2"/><circle cx="12" cy="9.3" r="2"/><circle cx="12" cy="14.7" r="2"/><circle cx="12" cy="20" r="2"/></svg>',
   },
 ];
 
 const STANCES: Array<{ s: Stance; tag: string; key: string; name: string; body: string; icon: string }> = [
   {
-    s: Stance.Aggressive, tag: 'AGR', key: 'Z', name: 'Aggressive',
-    body: 'Break formation to chase anything in sensor range.',
+    s: Stance.Aggressive, tag: 'AGR', key: 'Z', name: t('stanceAggressive'),
+    body: t('stanceAggressiveBody'),
     icon: GLY + '<path d="M5 16 L12 7 L19 16"/><path d="M5 21 L12 12 L19 21"/></svg>',
   },
   {
-    s: Stance.Neutral, tag: 'NEU', key: 'X', name: 'Neutral',
-    body: 'Hold the order, engage whatever comes inside weapons range.',
+    s: Stance.Neutral, tag: 'NEU', key: 'X', name: t('stanceNeutral'),
+    body: t('stanceNeutralBody'),
     icon: GLY + '<path d="M5 15 L12 8 L19 15"/><path d="M4 20 H20"/></svg>',
   },
   {
-    s: Stance.Passive, tag: 'PAS', key: 'C', name: 'Passive',
-    body: 'Return fire only. Never breaks off to pursue.',
+    s: Stance.Passive, tag: 'PAS', key: 'C', name: t('stancePassive'),
+    body: t('stancePassiveBody'),
     icon: GLY + '<path d="M12 3 L20 6 V12 C20 17 16 20 12 21.5 C8 20 4 17 4 12 V6 Z"/></svg>',
   },
   {
-    s: Stance.Evasive, tag: 'EVA', key: 'V', name: 'Evasive',
-    body: 'Do not fire. Run from contact and rejoin the fleet.',
+    s: Stance.Evasive, tag: 'EVA', key: 'V', name: t('stanceEvasive'),
+    body: t('stanceEvasiveBody'),
     icon: GLY + '<path d="M4 19 C9 19 8 5 13 5 H20"/><path d="M17 2 L20 5 L17 8"/><path d="M4 12 H9"/></svg>',
   },
 ];
@@ -886,7 +887,7 @@ export class Hud implements UiLayer {
 
     // resources
     const resCell = el('div', 'sf-cell', inner);
-    el('div', 'sf-cap', resCell).textContent = 'Resource Units';
+    el('div', 'sf-cap', resCell).textContent = t('resourceUnits');
     const resWrap = el('div', 'sf-res-wrap', resCell);
     const resVal = el('div', 'sf-val res', resWrap);
     const gain = el('div', 'sf-gain', resWrap);
@@ -895,7 +896,7 @@ export class Hud implements UiLayer {
 
     // supply
     const supplyCell = el('div', 'sf-cell sf-supply', inner);
-    el('div', 'sf-cap', supplyCell).textContent = 'Fleet Supply';
+    el('div', 'sf-cap', supplyCell).textContent = t('fleetSupply');
     const supplyVal = el('div', 'sf-val', supplyCell);
     const supplyBarEl = el('div', 'sf-bar', supplyCell);
     const supplyBar = new Bar(supplyBarEl);
@@ -912,18 +913,18 @@ export class Hud implements UiLayer {
     const strCell = el('div', 'sf-cell grow', inner);
 
     const fleetRow = el('div', 'sf-strength sf-fleetrow', strCell);
-    el('div', 'sf-cap', fleetRow).textContent = 'Fleet';
+    el('div', 'sf-cap', fleetRow).textContent = t('fleet');
     const fleetVal = el('div', 'sf-cap sf-num sf-fleetval', fleetRow);
 
     const opsRow = el('div', 'sf-strength sf-opsrow', strCell);
-    el('div', 'sf-cap', opsRow).textContent = 'Ops';
+    el('div', 'sf-cap', opsRow).textContent = t('ops');
     const opsVal = el('div', 'sf-cap sf-num sf-opsval', opsRow);
 
     el('div', 'sf-rule', inner);
 
     // clock
     const clockCell = el('div', 'sf-cell', inner);
-    el('div', 'sf-cap', clockCell).textContent = 'Elapsed';
+    el('div', 'sf-cap', clockCell).textContent = t('elapsed');
     const clockVal = el('div', 'sf-clock sf-num', clockCell);
 
     el('div', 'sf-rule', inner);
@@ -935,8 +936,8 @@ export class Hud implements UiLayer {
     // people whose work is in the build are named.
     const menuCell = el('div', 'sf-cell sf-menu-cell', inner);
     for (const [cmd, label, title] of [
-      ['menu', 'Menu', 'Controls, credits and audio (F1)'],
-      ['credits', 'Credits', 'Who made this, and whose music and sound it uses'],
+      ['menu', t('menuTabControls'), 'Controls, credits and audio (F1)'],
+      ['credits', t('menuTabCredits'), 'Who made this, and whose music and sound it uses'],
     ] as [string, string, string][]) {
       const b = el('button', 'sf-menu-btn', menuCell) as HTMLButtonElement;
       b.type = 'button';
@@ -988,11 +989,11 @@ export class Hud implements UiLayer {
     soloName.style.fontWeight = '600';
     const soloOrder = el('b', '', nameRow);
     const hullRow = el('div', 'sf-solo-row', soloBox);
-    hullRow.appendChild(document.createTextNode('Hull'));
+    hullRow.appendChild(document.createTextNode(t('hull')));
     const soloHull = el('b', '', hullRow);
     const hullBar = new Bar(el('div', 'sf-bar', soloBox));
     const shRow = el('div', 'sf-solo-row', soloBox);
-    shRow.appendChild(document.createTextNode('Shield'));
+    shRow.appendChild(document.createTextNode(t('shield')));
     const soloShield = el('b', '', shRow);
     const shBar = new Bar(el('div', 'sf-bar', soloBox), 'sh-full');
 
@@ -1067,7 +1068,7 @@ export class Hud implements UiLayer {
 
     const formCol = el('div', 'sf-cmd-col', mods);
     const formHead = el('div', 'sf-cmd-head', formCol);
-    el('span', 'sf-cap', formHead).textContent = 'Formation';
+    el('span', 'sf-cap', formHead).textContent = t('formationHeader');
     const formState = new Txt(el('b', 'sf-state', formHead));
     const formRow = el('div', 'sf-seg', formCol);
     for (const f of FORMATIONS) {
@@ -1087,7 +1088,7 @@ export class Hud implements UiLayer {
 
     const stanceCol = el('div', 'sf-cmd-col', mods);
     const stanceHead = el('div', 'sf-cmd-head', stanceCol);
-    el('span', 'sf-cap', stanceHead).textContent = 'Stance';
+    el('span', 'sf-cap', stanceHead).textContent = t('stanceHeader');
     const stanceState = new Txt(el('b', 'sf-state', stanceHead));
     const stanceRow = el('div', 'sf-seg', stanceCol);
     for (const s of STANCES) {
@@ -1514,7 +1515,7 @@ export class Hud implements UiLayer {
       if (underFire > 0) _ops.push(`${underFire} UNDER FIRE`);
       if (idleHarvest > 0) _ops.push(`${idleHarvest} COLLECTOR IDLE`);
       if (queued > 0) _ops.push(`${queued} IN BUILD`);
-      this.opsStr = _ops.length > 0 ? _ops.join('   ') : 'NOMINAL';
+      this.opsStr = _ops.length > 0 ? _ops.join('   ') : t('opsNominal');
       this.opsAlert = underFire > 0;
     }
     this.fleetTxt.set(this.fleetStr);
@@ -1542,7 +1543,7 @@ export class Hud implements UiLayer {
       return;
     }
 
-    this.selTitle.set('Selection');
+    this.selTitle.set(t('selection'));
     this.selCount.set(n + (n === 1 ? ' unit' : ' units'));
 
     // Single hull: show the detail block instead of a one-row list.
@@ -1999,7 +2000,7 @@ export class Hud implements UiLayer {
         this.alertOn = lost;
         this.alertBanner.classList.toggle('on', lost);
       }
-      if (lost) this.alertTxt.set('Mothership lost');
+      if (lost) this.alertTxt.set(t('mothershipLost'));
     }
 
     // Exponential falloff: sharp attack, readable tail.

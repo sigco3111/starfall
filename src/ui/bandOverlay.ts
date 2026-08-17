@@ -12,6 +12,7 @@
  */
 
 import { UI } from '../core/palette';
+import { t } from '../i18n';
 
 /** The rectangle shape published by `Controls.band`, in CSS pixels. */
 export interface BandRectLike {
@@ -27,11 +28,11 @@ export interface BandSource {
   readonly cursor: 'none' | 'attackMove' | 'move' | 'guard';
 }
 
-/** Human-readable prompt for each armed cursor mode. */
-const CURSOR_LABEL: Record<string, string> = {
-  attackMove: 'ATTACK-MOVE — click a destination',
-  move: 'MOVE — click a destination, drag vertically for altitude',
-  guard: 'GUARD — click a friendly hull',
+/** Human-readable prompt for each armed cursor mode. Keys in `i18n.ts`. */
+const CURSOR_LABEL_KEY: Record<string, string> = {
+  attackMove: 'bandAttackMove',
+  move: 'bandMove',
+  guard: 'bandGuard',
 };
 
 export class BandOverlay {
@@ -115,9 +116,9 @@ export class BandOverlay {
 
     if (src.cursor !== this.lastCursor) {
       this.lastCursor = src.cursor;
-      const label = CURSOR_LABEL[src.cursor];
-      if (label) {
-        this.hint.textContent = label;
+      const key = CURSOR_LABEL_KEY[src.cursor];
+      if (key) {
+        this.hint.textContent = t(key);
         this.hint.style.display = 'block';
       } else {
         this.hint.style.display = 'none';

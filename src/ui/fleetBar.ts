@@ -25,6 +25,7 @@ import { SHIP_SPECS } from '../core/registry';
 import { ALL_SHIP_CLASSES, Team, type ShipClass } from '../core/types';
 import { UI } from '../core/palette';
 import { SHIP_GLYPHS } from './hud';
+import { t } from '../i18n';
 import { bus } from '../core/bus';
 import type { World } from '../sim/world';
 
@@ -66,7 +67,7 @@ export class FleetBar {
     this.root.className = 'sf-fleetbar';
     const head = document.createElement('div');
     head.className = 'sf-fleetbar-head';
-    head.textContent = 'FLEET';
+    head.textContent = t('fleet');
     this.root.appendChild(head);
     this.list = document.createElement('div');
     this.list.className = 'sf-fleetbar-list';
@@ -114,7 +115,7 @@ export class FleetBar {
     }
     if (idle > 0) {
       seen.add('idle');
-      this.paint('idle', 'IDLE', IDLE_GLYPH, idle, 1, true, () => this.collectIdle(world));
+      this.paint('idle', t('fleetIdle'), IDLE_GLYPH, idle, 1, true, () => this.collectIdle(world));
     }
 
     // --- retire chips for classes we no longer own --------------------------
