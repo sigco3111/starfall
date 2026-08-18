@@ -58,12 +58,20 @@ export function shipDisplayName(registryName: string): string {
 
 export type Lang = 'en' | 'ko';
 
-let current: Lang = 'en';
-let koDict: Record<string, string> = {};
-let enDict: Record<string, string> = {};
+// Active locale. We store it on globalThis rather than as a plain
+// `let` so esbuild's minifier cannot inline `current` as the default
+// `'en'` value at every t() call site. With a plain `let` the minifier
+// saw no write to `current` reaching the entry module, so it pinned
+// every lookup to the English dict at compile time. Reading through
+// `globalThis.__currentLang` forces a runtime indirection that the
+// minifier has to keep.
+let current: Lang = (globalThis as unknown as { __currentLang?: Lang }).__currentLang ?? 'en';
+let koDict: Record<string, string> = (globalThis as unknown as { __koDict?: Record<string, string> }).__koDict ?? {};
+let enDict: Record<string, string> = (globalThis as unknown as { __enDict?: Record<string, string> }).__enDict ?? {};
 
 export function setLanguage(lang: Lang): void {
   current = lang;
+  (globalThis as unknown as { __currentLang: Lang }).__currentLang = lang;
 }
 
 export function getLanguage(): Lang {
@@ -71,12 +79,17 @@ export function getLanguage(): Lang {
 }
 
 export function t(key: string): string {
-  if (current === 'ko') {
-    const k = koDict[key];
-    if (k !== undefined) return k;
-  }
-  const e = enDict[key];
-  if (e !== undefined) return e;
+  // Read the active dict and current lang through `globalThis` so
+  // esbuild cannot inline this lookup. With plain `let` bindings
+  // esbuild inlined `current` as the default `'en'` and pinned
+  // every call site to `enDict[key]`. Going through globalThis
+  // forces a runtime indirection.
+  const lang = ((globalThis as unknown as { __currentLang?: Lang }).__currentLang ?? current);
+  const k = lang === 'ko'
+    ? ((globalThis as unknown as { __koDict?: Record<string, string> }).__koDict ?? koDict)
+    : ((globalThis as unknown as { __enDict?: Record<string, string> }).__enDict ?? enDict);
+  const v = k[key];
+  if (v !== undefined) return v;
   return key;
 }
 
@@ -641,7 +654,18 @@ const KO: Record<string, string> = {
   noticeShipReady: '%s 준비 완료',
 };
 
-// Late-bind the dicts — they are defined as `const` below this block,
-// so the module-level `let`s start empty and pick them up here.
+// Late-bind the dicts and switch the active locale to Korean. The
+// writes go to BOTH the module-level bindings (so direct callers
+// in this file see them) and to `globalThis` (so esbuild cannot
+// inline the call-site lookups). The globalThis write is what
+// actually powers every t() call from other modules.
 enDict = EN;
 koDict = KO;
+(globalThis as unknown as { __enDict: Record<string, string> }).__enDict = EN;
+(globalThis as unknown as { __koDict: Record<string, string> }).__koDict = KO;
+setLanguage('ko');
+// Pin the runtime values onto globalThis so that any module evaluating
+// after this line (i18n.ts itself re-imported, hot reload, etc.) starts
+// in Korean. esbuild can't drop these because the writes are observable
+// — main.ts reads them via initKorean().
+(globalThis as unknown as { __i18nReady: true }).__i18nReady = true;
