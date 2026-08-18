@@ -129,12 +129,12 @@ export const CONTROL_HELP: readonly { group: string; rows: readonly (readonly [s
     rows: [
       ['Left click', i18nT('ctrlLeftClick')],
       ['Left drag', i18nT('ctrlLeftDrag')],
-      ['Shift / Ctrl + click', 'add to / toggle in the selection'],
+      ['Shift / Ctrl + click', i18nT('ctrlShiftCtrlClick')],
       ['Double click', i18nT('ctrlDoubleClick')],
-      ['Tab / Shift+Tab', 'cycle subgroup by class'],
-      ['Ctrl+A', 'select all'],
-      ['Ctrl+1..9 / 1..9', 'assign / recall control group (recall twice to centre)'],
-      ['Fleet bar (left edge)', 'select a whole class; double click to frame it'],
+      ['Tab / Shift+Tab', i18nT('ctrlTabShiftTab')],
+      ['Ctrl+A', i18nT('ctrlCtrlA')],
+      ['Ctrl+1..9 / 1..9', i18nT('ctrlCtrlGroup')],
+      ['Fleet bar (left edge)', i18nT('ctrlFleetBar')],
       ['Esc', i18nT('ctrlEsc')],
     ],
   },
@@ -142,29 +142,29 @@ export const CONTROL_HELP: readonly { group: string; rows: readonly (readonly [s
     group: i18nT('ctrlGroupOrdering'),
     rows: [
       ['Right click', i18nT('ctrlRightClick')],
-      ['Right drag up / down', 'move disc: set the destination ALTITUDE'],
-      ['Shift + any order', 'queue it instead of replacing'],
-      ['A / M / G', 'arm attack-move / move / guard, then click'],
-      ['S', 'stop'],
-      ['D', 'dock'],
-      ['H', 'harvest'],
-      ['Alt+0..7', 'formation — none, delta, broad, wall, sphere, claw, line, auto'],
+      ['Right drag up / down', i18nT('ctrlRightDragUpDown')],
+      ['Shift + any order', i18nT('ctrlShiftAnyOrder')],
+      ['A / M / G', i18nT('ctrlAMG')],
+      ['S', i18nT('ctrlS')],
+      ['D', i18nT('ctrlD')],
+      ['H', i18nT('ctrlH')],
+      ['Alt+0..7', i18nT('ctrlAltFormation')],
       ['Z X C V', i18nT('ctrlZXCV')],
     ],
   },
   {
     group: i18nT('ctrlGroupCamera'),
     rows: [
-      ['Hold SPACE + drag', 'CAMERA ONLY — left pans, right orbits, no orders fire'],
+      ['Hold SPACE + drag', i18nT('ctrlHoldSpaceDrag')],
       ['Middle drag', i18nT('ctrlMiddleDrag')],
-      ['Alt + left drag', 'orbit'],
+      ['Alt + left drag', i18nT('ctrlAltLeftDrag')],
       ['Right drag sideways', i18nT('ctrlRightDragSideways')],
       ['Wheel', i18nT('ctrlWheel')],
-      ['Arrows / W / screen edge', 'pan'],
-      ['Q / E', 'yaw'],
-      ['Hold A / S / D', 'pan (a TAP is the command instead)'],
-      ['Space (tap)', 'centre on the selection'],
-      ['F / Shift+F', 'frame and follow the selection / cinematic chase'],
+      ['Arrows / W / screen edge', i18nT('ctrlArrowsW')],
+      ['Q / E', i18nT('ctrlQE')],
+      ['Hold A / S / D', i18nT('ctrlHoldASD')],
+      ['Space (tap)', i18nT('ctrlSpaceTap')],
+      ['F / Shift+F', i18nT('ctrlFShiftF')],
     ],
   },
 ];
@@ -234,7 +234,8 @@ const FORMATION_KEYS: Formation[] = [
 ];
 
 /** HUD labels for {@link FORMATION_KEYS}. */
-const FORMATION_NAMES = ['NONE', 'DELTA', 'BROAD', 'WALL', 'SPHERE', 'CLAW', 'LINE'];
+const FORMATION_NAMES_KEYS = ['formationNameNone','formationNameDelta','formationNameBroad','formationNameWall','formationNameSphere','formationNameClaw','formationNameLine'] as const;
+function formationName(n: number): string { return i18nT(FORMATION_NAMES_KEYS[n] ?? 'formationNameNone'); }
 
 // ---------------------------------------------------------------------------
 
@@ -1511,13 +1512,13 @@ export class Controls {
   private applyFormationKey(n: number, sel: number[]): void {
     if (n === 7) {
       this._formation = null;
-      bus.emit('notice', { text: 'FORMATION: AUTO', kind: 'info' });
+      bus.emit('notice', { text: i18nT('noticeFormationAuto'), kind: 'info' });
       return;
     }
     if (n < 0 || n >= FORMATION_KEYS.length) return;
     const f = FORMATION_KEYS[n];
     this._formation = f;
-    bus.emit('notice', { text: `FORMATION: ${FORMATION_NAMES[n]}`, kind: 'info' });
+    bus.emit('notice', { text: `${i18nT('noticeFormationFmt')} ${formationName(n)}`, kind: 'info' });
     if (sel.length === 0) return;
     for (let i = 0; i < sel.length; i++) {
       const s = this.world.ship(sel[i]);
@@ -1532,7 +1533,7 @@ export class Controls {
     g.length = 0;
     const sel = this.world.selection;
     for (let i = 0; i < sel.length; i++) g.push(sel[i]);
-    bus.emit('notice', { text: `GROUP ${n} SET (${g.length})`, kind: 'info' });
+    bus.emit('notice', { text: i18nT('noticeGroupSet').replace('%n', String(n)).replace('%c', String(g.length)), kind: 'info' });
   }
 
   private recallGroup(n: number, additive: boolean, timeStamp: number): void {
@@ -1567,7 +1568,7 @@ export class Controls {
     if (!this.selectionCentroid()) return;
     const rock = this.world.nearestRock(_hit.x, _hit.y, _hit.z, CONFIG.mapRadius * 2);
     if (rock < 0) {
-      bus.emit('notice', { text: 'NO RESOURCES IN RANGE', kind: 'warn' });
+      bus.emit('notice', { text: i18nT('noticeNoResourcesInRange'), kind: 'warn' });
       return;
     }
     commandHarvest(this.world, sel, rock);
@@ -1580,12 +1581,12 @@ export class Controls {
     if (sel.length === 0 || !this.selectionCentroid()) return;
     const bay = this.nearestHangar(_hit.x, _hit.y, _hit.z);
     if (bay < 0) {
-      bus.emit('notice', { text: 'NO DOCKING BAY AVAILABLE', kind: 'warn' });
+      bus.emit('notice', { text: i18nT('noticeNoDockingBayAvailable'), kind: 'warn' });
       return;
     }
     commandDock(this.world, sel, bay);
     bus.emit('ack', { kind: 'dock', count: sel.length });
-    bus.emit('notice', { text: 'DOCKING', kind: 'info' });
+    bus.emit('notice', { text: i18nT('noticeDocking'), kind: 'info' });
   }
 
   // -------------------------------------------------------------------------

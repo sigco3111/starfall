@@ -23,6 +23,7 @@
 import { Vector3 } from 'three';
 import { bus } from '../core/bus';
 import { CONFIG } from '../core/config';
+import { t as i18nT } from '../i18n';
 import { RESEARCH_BY_ID, SHIP_SPECS, STARTING_UNLOCKS } from '../core/registry';
 import {
   ShipClass,
@@ -170,7 +171,7 @@ export function cancelBuild(world: World, producerId: number, index: number): vo
   const job = p.queue[index];
   world.factions[host.team].resources += job.paid;
   p.queue.splice(index, 1);
-  if (host.team === Team.Player) notice(`${SHIP_SPECS[job.cls].name} cancelled`, 'info');
+  if (host.team === Team.Player) notice(i18nT('noticeShipCancelled').replace('%s', SHIP_SPECS[job.cls].name), 'info');
 }
 
 /** Begin a research project. One active project per faction; cost is up front. */
@@ -181,12 +182,12 @@ export function startResearch(world: World, team: Team, id: string): boolean {
   if (f.researching || f.research.has(id)) return false;
   for (let i = 0; i < r.requires.length; i++) if (!f.research.has(r.requires[i])) return false;
   if (f.resources < r.cost) {
-    if (team === Team.Player) notice(`Insufficient resources for ${r.name}`, 'warn');
+    if (team === Team.Player) notice(i18nT('noticeInsufficientResources').replace('%s', r.name), 'warn');
     return false;
   }
   f.resources -= r.cost;
   f.researching = { id, remaining: r.time, total: r.time };
-  if (team === Team.Player) notice(`${r.name}: research started`, 'info');
+  if (team === Team.Player) notice(i18nT('noticeResearchStarted').replace('%s', r.name), 'info');
   return true;
 }
 
@@ -507,7 +508,7 @@ function stepProducer(world: World, host: Ship, p: Producer, dt: number): void {
   _builtEv.cls = ns.cls;
   _builtEv.team = ns.team;
   bus.emit('built', _builtEv);
-  if (host.team === Team.Player) notice(`${sp.name} ready`, 'info');
+  if (host.team === Team.Player) notice(i18nT('noticeShipReady').replace('%s', sp.name), 'info');
 }
 
 // ---------------------------------------------------------------------------

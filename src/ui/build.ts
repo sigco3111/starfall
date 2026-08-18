@@ -919,7 +919,7 @@ export class BuildPanel implements UiLayer {
         bubbles: true,
         detail: { shipId: this.producer.shipId, team: this.team },
       }));
-      bus.emit('notice', { text: 'RALLY: select a destination', kind: 'info' });
+      bus.emit('notice', { text: t('noticeRallySelectDestination'), kind: 'info' });
     };
     const onClr = (): void => {
       if (!this.producer) return;

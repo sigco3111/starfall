@@ -319,6 +319,57 @@ const EN: Record<string, string> = {
   // Units suffix (selection inspector)
   unitSingular: 'unit',
   unitPlural: 'units',
+
+  // Formation names (controls.ts FORMATION_NAMES + notice interpolation)
+  formationNameNone: 'NONE',
+  formationNameDelta: 'DELTA',
+  formationNameBroad: 'BROAD',
+  formationNameWall: 'WALL',
+  formationNameSphere: 'SPHERE',
+  formationNameClaw: 'CLAW',
+  formationNameLine: 'LINE',
+  formationNameAuto: 'AUTO',
+
+  // Extra in-game notices (controls.ts + build.ts + sim/economy.ts)
+  noticeRallySelectDestination: 'RALLY: select a destination',
+  noticeFormationAuto: 'FORMATION: AUTO',
+  noticeFormationFmt: 'FORMATION:',
+  noticeGroupSet: 'GROUP %n SET (%c)',
+  noticeNoResourcesInRange: 'NO RESOURCES IN RANGE',
+  noticeNoDockingBayAvailable: 'NO DOCKING BAY AVAILABLE',
+  noticeDocking: 'DOCKING',
+  noticeFleetUnderAttack: 'Fleet under attack',
+  noticeResourceFieldExhausted: 'Resource field exhausted',
+  noticeFleetSupportCapacityReached: 'Fleet support capacity reached',
+  noticeResearchComplete: 'Research complete',
+  noticeResearchCompleteFmt: '%s: research complete',
+
+  // Extra CONTROL_HELP rows (Left/Right labels stay English; actions Korean)
+  ctrlShiftCtrlClick: 'add to / toggle in the selection',
+  ctrlTabShiftTab: 'cycle subgroup by class',
+  ctrlCtrlA: 'select all',
+  ctrlCtrlGroup: 'assign / recall control group (recall twice to centre)',
+  ctrlFleetBar: 'select a whole class; double click to frame it',
+  ctrlRightDragUpDown: 'move disc: set the destination ALTITUDE',
+  ctrlShiftAnyOrder: 'queue it instead of replacing',
+  ctrlAMG: 'arm attack-move / move / guard, then click',
+  ctrlS: 'stop',
+  ctrlD: 'dock',
+  ctrlH: 'harvest',
+  ctrlAltFormation: 'formation — none, delta, broad, wall, sphere, claw, line, auto',
+  ctrlHoldSpaceDrag: 'CAMERA ONLY — left pans, right orbits, no orders fire',
+  ctrlAltLeftDrag: 'orbit',
+  ctrlArrowsW: 'pan',
+  ctrlQE: 'yaw',
+  ctrlHoldASD: 'pan (a TAP is the command instead)',
+  ctrlSpaceTap: 'centre on the selection',
+  ctrlFShiftF: 'frame and follow the selection / cinematic chase',
+
+  // economy.ts 자체 notice() 영문 잔재 4건
+  noticeShipCancelled: '%s cancelled',
+  noticeInsufficientResources: 'Insufficient resources for %s',
+  noticeResearchStarted: '%s: research started',
+  noticeShipReady: '%s ready',
 };
 
 // ────────────────────────────────────────────────────────────────
@@ -537,6 +588,57 @@ const KO: Record<string, string> = {
   // Units suffix
   unitSingular: '기',
   unitPlural: '기',
+
+  // Formation names (KO)
+  formationNameNone: '없음',
+  formationNameDelta: '델타',
+  formationNameBroad: '브로드',
+  formationNameWall: '월',
+  formationNameSphere: '스피어',
+  formationNameClaw: '클로',
+  formationNameLine: '라인',
+  formationNameAuto: '자동',
+
+  // Extra in-game notices (KO)
+  noticeRallySelectDestination: '집결지: 목적지를 선택하세요',
+  noticeFormationAuto: '편대: 자동',
+  noticeFormationFmt: '편대:',
+  noticeGroupSet: '그룹 %n 설정 (%c)',
+  noticeNoResourcesInRange: '범위 내 자원 없음',
+  noticeNoDockingBayAvailable: '사용 가능한 격납고 없음',
+  noticeDocking: '도킹 중',
+  noticeFleetUnderAttack: '함대가 공격받고 있습니다',
+  noticeResourceFieldExhausted: '자원지가 소진되었습니다',
+  noticeFleetSupportCapacityReached: '함대 보급 한도 도달',
+  noticeResearchComplete: '연구 완료',
+  noticeResearchCompleteFmt: '%s: 연구 완료',
+
+  // Extra CONTROL_HELP rows (KO)
+  ctrlShiftCtrlClick: '선택에 추가 / 선택 토글',
+  ctrlTabShiftTab: '클래스별 하위 그룹 순환',
+  ctrlCtrlA: '전부 선택',
+  ctrlCtrlGroup: '통제 그룹 지정 / 호출 (두 번 호출로 중앙 정렬)',
+  ctrlFleetBar: '클래스 전체 선택; 더블 클릭으로 화면에 맞춤',
+  ctrlRightDragUpDown: '이동 디스크: 목적지 고도 설정',
+  ctrlShiftAnyOrder: '대체하지 않고 대기열에 추가',
+  ctrlAMG: '공격 이동/이동/보호를 활성화한 뒤 클릭',
+  ctrlS: '정지',
+  ctrlD: '귀환',
+  ctrlH: '채집',
+  ctrlAltFormation: '편대 — 없음, 델타, 브로드, 월, 스피어, 클로, 라인, 자동',
+  ctrlHoldSpaceDrag: '카메라 전용 — 좌클릭은 팬, 우클릭은 궤도, 주문 발생 안 함',
+  ctrlAltLeftDrag: '궤도',
+  ctrlArrowsW: '팬',
+  ctrlQE: '요(yaw)',
+  ctrlHoldASD: '팬 (탭하면 그 키가 명령이 됨)',
+  ctrlSpaceTap: '선택 부대를 중앙으로',
+  ctrlFShiftF: '선택 부대를 프레임 / 시네마틱 추적',
+
+  // economy.ts 자체 notice() 영문 잔재 4건 (KO)
+  noticeShipCancelled: '%s 취소됨',
+  noticeInsufficientResources: '%s 연구에 자원 부족',
+  noticeResearchStarted: '%s: 연구 시작',
+  noticeShipReady: '%s 준비 완료',
 };
 
 // Late-bind the dicts — they are defined as `const` below this block,
