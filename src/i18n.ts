@@ -311,6 +311,15 @@ const EN: Record<string, string> = {
   sfxPackUseImpact: 'heavy plate and metal strikes',
   sfxPackUseInterface: 'clicks, confirmations, alerts',
 
+  // HUD ops alert suffixes (hud.ts)
+  opsUnderFire: 'UNDER FIRE',
+  opsCollectorIdle: 'COLLECTOR IDLE',
+  opsInBuild: 'IN BUILD',
+
+  // Units suffix (selection inspector)
+  unitSingular: 'unit',
+  unitPlural: 'units',
+
   // No-build category fallback
   categoryFallbackSupport: 'SUPPORT',
   categoryFallbackCollection: 'RESOURCE COLLECTION',
@@ -523,6 +532,15 @@ const KO: Record<string, string> = {
   sfxPackUseSciFi: '레이저, 폭발, 포스 필드, 금속 충돌',
   sfxPackUseImpact: '중장갑/금속 타격',
   sfxPackUseInterface: '클릭, 확인, 알림',
+
+  // HUD ops alert suffixes
+  opsUnderFire: '피격 중',
+  opsCollectorIdle: '수집기 대기',
+  opsInBuild: '건조 중',
+
+  // Units suffix
+  unitSingular: '기',
+  unitPlural: '기',
 };
 
 // Late-bind the dicts — they are defined as `const` below this block,

@@ -1512,9 +1512,9 @@ export class Hud implements UiLayer {
       // Ops reads as a priority list: threats first, then idle capacity, then
       // work in progress. Empty means genuinely nothing needs the player.
       _ops.length = 0;
-      if (underFire > 0) _ops.push(`${underFire} UNDER FIRE`);
-      if (idleHarvest > 0) _ops.push(`${idleHarvest} COLLECTOR IDLE`);
-      if (queued > 0) _ops.push(`${queued} IN BUILD`);
+      if (underFire > 0) _ops.push(`${underFire} ${t('opsUnderFire')}`);
+      if (idleHarvest > 0) _ops.push(`${idleHarvest} ${t('opsCollectorIdle')}`);
+      if (queued > 0) _ops.push(`${queued} ${t('opsInBuild')}`);
       this.opsStr = _ops.length > 0 ? _ops.join('   ') : t('opsNominal');
       this.opsAlert = underFire > 0;
     }
@@ -1544,7 +1544,7 @@ export class Hud implements UiLayer {
     }
 
     this.selTitle.set(t('selection'));
-    this.selCount.set(n + (n === 1 ? ' unit' : ' units'));
+    this.selCount.set(n + ` ${n === 1 ? t('unitSingular') : t('unitPlural')}`);
 
     // Single hull: show the detail block instead of a one-row list.
     if (n === 1) {
