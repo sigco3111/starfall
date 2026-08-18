@@ -18,10 +18,24 @@ import { setLanguage as setI18nLang, t as tI18n, applyStatic } from './i18n';
 
 // ---------------------------------------------------------------------------
 // Localization — Korean by default for this fork.
-// `applyStatic` rewrites every [data-i18n]/[data-i18n-title] node in the DOM
-// that was emitted by `index.html` (boot screen, noscript fallback). The
-// in-game HUD/panels call `t()` themselves when they mount.
+//
+// The key insight: esbuild's minifier was inlining every t() call as
+// a direct dict lookup at the call site, with `current` pinned to the
+// default `'en'` value. The fix is to install a runtime resolver on
+// `globalThis.__tResolver` and have i18n.ts's `t()` dispatch through
+// that resolver. Because the resolver is assigned post-bundle, the
+// minifier cannot inline its return value — the function it calls
+// only exists once the entry module has run.
 // ---------------------------------------------------------------------------
+(globalThis as unknown as { __tResolver: (k: string) => string }).__tResolver =
+  (key: string): string => {
+    const k = ((globalThis as unknown as { __koDict?: Record<string, string> }).__koDict) ?? {};
+    const v = k[key];
+    if (v !== undefined) return v;
+    const e = ((globalThis as unknown as { __enDict?: Record<string, string> }).__enDict) ?? {};
+    return e[key] ?? key;
+  };
+
 setI18nLang('ko');
 applyStatic(document);
 

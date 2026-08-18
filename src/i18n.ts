@@ -79,18 +79,28 @@ export function getLanguage(): Lang {
 }
 
 export function t(key: string): string {
-  // Read the active dict and current lang through `globalThis` so
-  // esbuild cannot inline this lookup. With plain `let` bindings
-  // esbuild inlined `current` as the default `'en'` and pinned
-  // every call site to `enDict[key]`. Going through globalThis
-  // forces a runtime indirection.
-  const lang = ((globalThis as unknown as { __currentLang?: Lang }).__currentLang ?? current);
+  // All dispatch is funneled through a single globalThis function. This
+  // is the only call site esbuild's minifier is unable to inline: the
+  // resolver is a closure assigned at runtime by main.ts (after the
+  // bundle has been built), and main.ts assigns it before any t() call
+  // runs. The function captures both the active dict and the language
+  // and returns the right string. Because the resolver is dynamic
+  // (assigned post-bundle), the static minifier has to leave t()'s
+  // body intact.
+  const resolver = (globalThis as unknown as { __tResolver?: (k: string) => string }).__tResolver;
+  if (resolver !== undefined) {
+    const v = resolver(key);
+    if (v !== undefined) return v;
+  }
+  // Fallback: inline path used only if the resolver wasn't installed
+  // (which would mean the bundle was built but main.ts didn't run).
+  const lang = (globalThis as unknown as { __currentLang?: Lang }).__currentLang ?? 'en';
   const k = lang === 'ko'
-    ? ((globalThis as unknown as { __koDict?: Record<string, string> }).__koDict ?? koDict)
-    : ((globalThis as unknown as { __enDict?: Record<string, string> }).__enDict ?? enDict);
-  const v = k[key];
-  if (v !== undefined) return v;
-  return key;
+    ? ((globalThis as unknown as { __koDict?: Record<string, string> }).__koDict)
+    : ((globalThis as unknown as { __enDict?: Record<string, string> }).__enDict);
+  if (k === undefined) return key;
+  const v = (k as Record<string, string>)[key];
+  return v ?? key;
 }
 
 /**
