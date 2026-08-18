@@ -319,10 +319,6 @@ const EN: Record<string, string> = {
   // Units suffix (selection inspector)
   unitSingular: 'unit',
   unitPlural: 'units',
-
-  // No-build category fallback
-  categoryFallbackSupport: 'SUPPORT',
-  categoryFallbackCollection: 'RESOURCE COLLECTION',
 };
 
 // ────────────────────────────────────────────────────────────────
